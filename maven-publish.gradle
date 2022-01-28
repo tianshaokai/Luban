@@ -1,0 +1,70 @@
+apply plugin: 'maven-publish'
+apply plugin: 'publishing'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.source
+}
+
+def GROUP_ID = "io.github.tianshaokai"
+def POM_ARTIFACT_ID = "luban"
+def VERSION_NAME = "1.0.0-SNAPSHOT"
+
+def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+
+def repoUrl = VERSION_NAME.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = GROUP_ID//公司域名
+                artifactId = POM_ARTIFACT_ID//该aar包的名称
+                version = VERSION_NAME//版本号
+                //aar 文件
+                from components.release
+
+                pom {
+                    name = 'Luban'
+                    description = 'Luban压缩'
+                    url = 'https://github.com/tianshaokai/Luban'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'tianshaokai'
+                            name = 'tianshaokai'
+                            email = 'businesskai@163.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com:tianshaokai/Luban.git'
+                        developerConnection = 'scm:git:ssh://github.com:tianshaokai/Luban.git'
+                        url = 'https://github.com:tianshaokai/Luban.git'
+                    }
+                }
+
+            }
+        }
+
+        repositories {
+            maven {
+                url = repoUrl
+                credentials {
+                    username ossrhUsername
+                    password ossrhPassword
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications
+}
