@@ -11,6 +11,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -57,7 +58,14 @@ public class Luban implements Handler.Callback {
    */
   private File getImageCacheFile(Context context, String suffix) {
     if (TextUtils.isEmpty(mTargetDir)) {
-      mTargetDir = getImageCacheDir(context).getAbsolutePath();
+      File file = getImageCacheDir(context);
+      if (file == null) {
+        if (mCompressListener != null) {
+          mCompressListener.onError(new FileNotFoundException("创建缓存目录失败，请检查手机剩余存储空间"));
+        }
+        return null;
+      }
+      mTargetDir = file.getAbsolutePath();
     }
 
     String cacheBuilder = mTargetDir + "/" +
@@ -70,7 +78,14 @@ public class Luban implements Handler.Callback {
 
   private File getImageCustomFile(Context context, String filename) {
     if (TextUtils.isEmpty(mTargetDir)) {
-      mTargetDir = getImageCacheDir(context).getAbsolutePath();
+      File file = getImageCacheDir(context);
+      if (file == null) {
+        if (mCompressListener != null) {
+          mCompressListener.onError(new FileNotFoundException("创建缓存目录失败，请检查手机剩余存储空间"));
+        }
+        return null;
+      }
+      mTargetDir = file.getAbsolutePath();
     }
 
     String cacheBuilder = mTargetDir + "/" + filename;
