@@ -9,7 +9,7 @@ task androidSourcesJar(type: Jar) {
 
 def GROUP_ID = "io.github.tianshaokai"
 def POM_ARTIFACT_ID = "luban"
-def VERSION_NAME = "1.0.0-SNAPSHOT"
+def VERSION_NAME = "1.0.0"
 
 def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
 def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
