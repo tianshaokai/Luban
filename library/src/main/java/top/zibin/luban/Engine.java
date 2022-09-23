@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Responsible for starting compress and managing active and cached resources.
@@ -70,11 +71,13 @@ class Engine {
     BitmapFactory.Options options = new BitmapFactory.Options();
     options.inSampleSize = computeSize();
 
-    Bitmap tagBitmap = BitmapFactory.decodeStream(srcImg.open(), null, options);
+    InputStream inputStream = srcImg.open();
+
+    Bitmap tagBitmap = BitmapFactory.decodeStream(inputStream, null, options);
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-    if (Checker.SINGLE.isJPG(srcImg.open())) {
-      tagBitmap = rotatingImage(tagBitmap, Checker.SINGLE.getOrientation(srcImg.open()));
+    if (Checker.SINGLE.isJPG(inputStream)) {
+      tagBitmap = rotatingImage(tagBitmap, Checker.SINGLE.getOrientation(inputStream));
     }
     tagBitmap.compress(focusAlpha ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 60, stream);
     tagBitmap.recycle();

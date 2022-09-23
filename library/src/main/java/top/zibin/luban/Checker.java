@@ -138,6 +138,11 @@ enum Checker {
     return 0;
   }
 
+  /**
+   * 获取图片的 后缀名
+   * @param input
+   * @return
+   */
   String extSuffix(InputStreamProvider input) {
     try {
       BitmapFactory.Options options = new BitmapFactory.Options();
