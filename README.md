@@ -4,6 +4,13 @@
 
 [原库地址](https://github.com/Curzibn/Luban/releases)
 
+
+# 导入
+
+```sh
+implementation 'io.github.tianshaokai:luban:1.0.0'
+```
+
 # 使用
 
 ### 方法列表
